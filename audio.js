@@ -77,19 +77,47 @@ export function sfx(name, amount = 1) {
   if (name === 'goal') { noise(t, 1.6, 1200, 0.12, 'bandpass'); [523, 659, 784, 1046].forEach((f, i) => tone(f, t + i * 0.09, 0.4, 'square', 0.04)); }
   if (name === 'land') noise(t, 0.08, 120, 0.25 * amount);
   if (name === 'key') tone(1800, t, 0.03, 'square', 0.03);
+  if (name === 'cannon') { noise(t, 0.5, 300, 0.5); tone(90, t, 0.35, 'sine', 0.4, 40); }
+  if (name === 'boom') { noise(t, 1.1, 220, 0.6); tone(60, t, 0.8, 'sine', 0.45, 25); }
+  if (name === 'crash') { noise(t, 0.6, 600, 0.25); tone(140, t + 0.05, 0.4, 'triangle', 0.15, 60); }
+  if (name === 'splash') noise(t, 0.6, 1500, 0.2, 'bandpass');
+  if (name === 'chirp') [2600, 3200, 2800].forEach((f, i) => tone(f, t + i * 0.08, 0.07, 'sine', 0.06, f * 1.3));
+  if (name === 'crimp') tone(900, t, 0.05, 'square', 0.05, 500);
+  if (name === 'miss') tone(200, t, 0.15, 'sawtooth', 0.06, 120);
+  if (name === 'sizzle') noise(t, amount, 5000, 0.08, 'highpass');
+  if (name === 'ding') [1046, 1318, 1568, 2093].forEach((f, i) => tone(f, t + i * 0.06, 0.4, 'triangle', 0.1));
+}
+
+// brass stab for the mambo section: a filtered sawtooth that opens up
+function brass(freq, start, dur, vol = 0.06) {
+  const o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+  o.type = 'sawtooth'; o.frequency.setValueAtTime(freq, start);
+  f.type = 'lowpass'; f.frequency.setValueAtTime(500, start); f.frequency.exponentialRampToValueAtTime(3200, start + 0.05); f.frequency.exponentialRampToValueAtTime(900, start + dur);
+  g.gain.setValueAtTime(0.0001, start); g.gain.exponentialRampToValueAtTime(vol, start + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  o.connect(f).connect(g).connect(master);
+  o.start(start); o.stop(start + dur + 0.02);
 }
 
 // ---- dance floor music: a small bank of synthesized tracks, or your own files ----
 // Salsa: son clave 3-2, cowbell, conga, anticipated tumbao bass, piano montuno (I-IV-V-IV).
 // Bachata: güira, bongo, bass on the 1 and the 4 tap, a requinto-style arpeggio over Am-Dm-E-Am.
 const TRACKS = [
-  { name: 'salsa', bpm: 190, len: 16, play(i, t, e) {
-    if ([0, 3, 6, 10, 12].includes(i)) tone(2400, t, 0.05, 'sine', 0.09);
-    if (i % 2 === 0) tone(i % 4 === 0 ? 800 : 560, t, 0.07, 'square', 0.025);
-    if (i % 4 === 3) tone(210, t, 0.18, 'sine', 0.12, 160);
-    const b = [[3, 0], [6, 7], [11, 5], [14, 7]].find(([s]) => s === i);
-    if (b) tone(65.4 * 2 ** (b[1] / 12), t, e * 2.6, 'triangle', 0.22);
-    if (i % 2 === 1) [[0, 4, 7], [5, 9, 12], [7, 11, 14], [5, 9, 12]][Math.floor(i / 4)].forEach(n => tone(261.6 * 2 ** (n / 12), t, 0.12, 'triangle', 0.03));
+  { name: 'salsa', bpm: 186, len: 32, play(i, t, e) {
+    // 4 bars over C - F - G - F. i is the eighth note in the 4-bar loop.
+    const bar = Math.floor(i / 8), s = i % 8, two = i % 16;
+    const root = [48, 53, 55, 53][bar], f = (m) => 440 * 2 ** ((m - 69) / 12);
+    if ([0, 3, 6, 10, 12].includes(two)) tone(2500, t, 0.045, 'sine', 0.1); // son clave 3-2
+    if (s % 2 === 0) tone(s % 4 === 0 ? 820 : 600, t, 0.08, 'square', s === 0 ? 0.035 : 0.022); // campana
+    if (s === 2) tone(340, t, 0.06, 'square', 0.05); // conga slap
+    if (s === 6 || s === 7) tone(s === 6 ? 220 : 196, t, 0.18, 'sine', 0.13, 160); // conga open tones
+    if (s === 5) noise(t, 0.04, 6000, 0.05, 'highpass'); // a little güiro-ish scratch
+    if (s === 3) tone(f(root - 12 + 7), t, e * 2.8, 'triangle', 0.24); // tumbao: the "and" of 2
+    if (s === 6) tone(f([53, 55, 53, 48][bar] - 12), t, e * 2.8, 'triangle', 0.24); // the 4, anticipating the next chord
+    // piano montuno: syncopated octaves bouncing between chord tones
+    const ch = [0, 4, 7, 12, 7, 4, 12, 7], pat = [1, 0, 1, 1, 0, 1, 1, 0];
+    if (pat[s]) { const n = f(root + 12 + ch[s]); tone(n, t, 0.16, 'triangle', 0.045); tone(n * 2, t, 0.12, 'triangle', 0.025); }
+    // mambo: brass hits on the last bar of the loop
+    if (bar === 3 && [0, 3, 5].includes(s)) [0, 4, 7].forEach(k => brass(f(root + 24 + k), t, s === 5 ? 0.45 : 0.18));
   } },
   { name: 'bachata', bpm: 128, len: 32, play(i, t, e) {
     const bar = Math.floor(i / 8), s = i % 8;

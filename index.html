@@ -40,7 +40,8 @@
   <a class="brand" href="./">Daniel Aguirre<small>offsec · consulting · teaching</small></a>
   <nav class="hud-btns" aria-label="controls">
     <button id="flagBtn" class="hb game" title="flags"><b>⚑</b> <span id="flagCount">0/15</span></button>
-    <button id="placesBtn" class="hb game" data-t="ui.places">Places</button>
+    <button id="placesBtn" class="hb game" data-t="ui.map">Map</button>
+    <button id="garageBtn" class="hb game" data-t="ui.garage">Garage</button>
     <button id="termBtn" class="hb game mono" title="terminal (T)">&gt;_</button>
     <button id="soundBtn" class="hb game" title="sound (M)" aria-label="sound"><i>♪</i></button>
     <div class="lang hb-group" role="group" aria-label="language"></div>
@@ -48,7 +49,46 @@
   </nav>
 </header>
 
-<div id="places" class="places" hidden><div class="list"></div></div>
+<canvas id="minimap" class="game" width="170" height="170" aria-label="minimap"></canvas>
+<div id="lap" class="lap" hidden></div>
+
+<section id="bigmap" class="overlay" hidden aria-label="map">
+  <div class="panel map-panel">
+    <button id="mapClose" class="x" aria-label="close">×</button>
+    <p class="kicker" data-t="ui.map">Map</p>
+    <p class="help" data-t="ui.mapHelp"></p>
+    <canvas width="640" height="640"></canvas>
+  </div>
+</section>
+
+<section id="garage" class="overlay" hidden aria-label="garage">
+  <div class="panel">
+    <button id="garageClose" class="x" aria-label="close">×</button>
+    <p class="kicker" data-t="ui.garage">Garage</p>
+    <h2 class="title" data-t="ui.garageTitle">Pick your ride</h2>
+    <div class="rides"></div>
+  </div>
+</section>
+
+<section id="cook" class="overlay cook" hidden aria-label="cooking">
+  <div class="panel">
+    <button id="cookClose" class="x" aria-label="close">×</button>
+    <p class="kicker">~/cocina</p>
+    <h2 class="title" data-t="ui.cookTitle">Cuban empanadas</h2>
+    <div class="stage">
+      <div class="emp"><div class="dots"></div></div>
+      <span class="fork" aria-hidden="true">🍴</span>
+    </div>
+    <div class="frybar" hidden><b></b><i></i></div>
+    <p class="msg"></p>
+  </div>
+</section>
+
+<div id="tankbar" class="tankbar" hidden>
+  <span data-t="ui.tankNote"></span>
+  <button id="fireBtn" class="btn primary small" data-t="ui.fire">Fire</button>
+  <button id="resetMap" class="btn small" data-t="ui.resetMap">Reset map</button>
+</div>
 
 <div id="progress" class="game"><span class="where"></span><span class="count"></span><span class="next"></span><b class="bar"></b></div>
 <div id="keys" class="game" aria-hidden="true"></div>
