@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daniel Aguirre</title>
+<meta name="description" content="Daniel Aguirre: offensive security, consulting and teaching. Drive an RC car around my desk at 3am, then go outside.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.goatcounter.com; connect-src 'self' https://*.goatcounter.com; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#0b0e1a">
+<meta property="og:title" content="Daniel Aguirre">
+<meta property="og:description" content="Offensive security, consulting, teaching, and whatever is on the workbench this week.">
+<meta property="og:image" content="https://dan-aguirre.github.io/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="modulepreload" href="vendor/three.module.min.js">
+<script type="module" src="main.js"></script>
+</head>
+<!--
+  Hi, source reader. You're my kind of person.
+
+  No framework here: three.js, some homemade physics, and a lot of rounded boxes.
+  Here's something for your trouble:
+
+      REFOe3ZpZXdfc291cmNlX2lzX3JlY29ufQ==
+
+  Decode it and submit it in the terminal (press T). There are 14 more.
+-->
+<body data-world="desk">
+<canvas id="scene" tabindex="-1" aria-label="A small RC car on a desk at night. Use WASD or arrow keys to drive."></canvas>
+<div id="labels" aria-hidden="true"></div>
+<div id="joy" aria-hidden="true"><i></i></div>
+
+<header class="hud-top">
+  <a class="brand" href="./">Daniel Aguirre<small>offsec · consulting · teaching</small></a>
+  <nav class="hud-btns" aria-label="controls">
+    <button id="flagBtn" class="hb game" title="flags"><b>⚑</b> <span id="flagCount">0/15</span></button>
+    <button id="placesBtn" class="hb game" data-t="ui.places">Places</button>
+    <button id="termBtn" class="hb game mono" title="terminal (T)">&gt;_</button>
+    <button id="soundBtn" class="hb game" title="sound (M)" aria-label="sound"><i>♪</i></button>
+    <div class="lang hb-group" role="group" aria-label="language"></div>
+    <a id="recruiterLink" class="hb strong" href="cv.html" data-t="ui.recruiter">Recruiter mode</a>
+  </nav>
+</header>
+
+<div id="places" class="places" hidden><div class="list"></div></div>
+
+<div id="progress" class="game"><span class="where"></span><span class="count"></span><span class="next"></span><b class="bar"></b></div>
+<div id="keys" class="game" aria-hidden="true"></div>
+<button id="prompt" class="prompt" disabled></button>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<aside id="card" class="card" aria-live="polite">
+  <button id="cardClose" class="x" aria-label="close">×</button>
+  <div class="card-body"></div>
+</aside>
+
+<section id="term" class="term" hidden aria-label="terminal">
+  <div class="term-bar"><span>dan@desk: ~</span><button id="termClose" class="x" aria-label="close terminal">×</button></div>
+  <div class="term-out" aria-live="polite"></div>
+  <form class="term-line" autocomplete="off"><label class="ps1" for="termIn">dan@desk:~$</label><input id="termIn" spellcheck="false" autocapitalize="off" autocomplete="off"></form>
+</section>
+
+<div id="warp" class="warp" hidden><pre></pre></div>
+
+<section id="intro" class="intro">
+  <div class="intro-inner">
+    <p class="kicker"><span class="dot"></span><span data-t="ui.kicker"></span></p>
+    <h1>Daniel <span>Aguirre</span></h1>
+    <p class="tagline" data-t="ui.tagline"></p>
+    <p class="blurb" data-t="ui.intro"></p>
+    <div class="cta">
+      <button id="start" class="btn primary" disabled><span data-t="ui.start">Drive in</span><kbd>↵</kbd></button>
+      <a class="btn ghost recruiter" href="cv.html"><span data-t="ui.recruiter">Recruiter mode</span><small data-t="ui.recruiterSub"></small></a>
+    </div>
+    <p class="loading"><span class="spin"></span><span data-t="ui.loading">loading</span></p>
+  </div>
+</section>
+<noscript><p class="nojs">This page needs JavaScript for the 3D part. The plain version is at <a href="cv.html">cv.html</a>.</p></noscript>
+</body>
+</html>

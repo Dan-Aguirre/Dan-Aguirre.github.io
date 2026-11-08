@@ -1,0 +1,9 @@
+/* TEAM */
+Built by: Daniel Aguirre
+Contact: danielaguirre3141 [at] protonmail.com
+From: Florida, with roots in Guatemala and Colombia
+
+/* SITE */
+Stack: three.js, plain JavaScript, a lot of rounded boxes
+Physics: homemade (it shows)
+Music: synthesized in the browser, no files

@@ -1,0 +1,10 @@
+# Found a real bug on this site? I'd genuinely love to hear about it.
+# It's a static site, so there isn't much to break, but I'll credit you either way.
+Contact: mailto:danielaguirre3141@protonmail.com
+Expires: 2027-12-31T23:59:00.000Z
+Preferred-Languages: en, es
+Canonical: https://dan-aguirre.github.io/.well-known/security.txt
+Policy: https://dan-aguirre.github.io/.well-known/security.txt
+
+# Thanks for checking here. That's the right instinct.
+# DAN{responsible_disclosure}

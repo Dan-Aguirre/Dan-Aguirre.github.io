@@ -1,0 +1,8 @@
+# Hi crawler. Hi hacker.
+User-agent: *
+Allow: /
+
+# please do not look in here
+Disallow: /secret-plans/
+
+Sitemap: https://dan-aguirre.github.io/sitemap.txt
